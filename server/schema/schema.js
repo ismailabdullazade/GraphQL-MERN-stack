@@ -92,6 +92,7 @@ const mutation = new GraphQLObjectType({
                 return client.save()
             }
         },
+        // Delete Client
         deleteClient:{
             type:ClientType,
             args:{
@@ -101,6 +102,7 @@ const mutation = new GraphQLObjectType({
                 return Client.findByIdAndRemove(args.id)
             }
         },
+        //Add Project
         addProject:{
             type:ProjectType,
             args:{
@@ -129,6 +131,49 @@ const mutation = new GraphQLObjectType({
             return project.save()
             }
         },
+        // Delete Project
+        deleteProject:{
+            type:ProjectType,
+            args:{
+                id:{type:GraphQLNonNull(GraphQLID)}
+            },
+            resolve(parent,args){
+                return Project.findByIdAndRemove(args.id)
+            }
+        },
+        //Update Project
+        updateProject:{
+            type:ProjectType,
+            args:{
+                id:{type:GraphQLNonNull(GraphQLID)},
+                name:{type:GraphQLString},
+                description:{type:GraphQLString},
+                status:{
+                    type: new GraphQLEnumType({
+                        name:"ProjectStatusUpdate",
+                        values:{
+                            new:{value:"Not started"},
+                            progress:{value:"In progress"},
+                            completed:{value:"Completed"},
+                        },
+                    })
+                }
+            },
+            resolve(parent,args){
+                return Project.findByIdAndUpdate(
+                    args.id,
+                    {
+                        $set:{
+                            name:args.name,
+                            description:args.description,
+                            status:args.status,
+                        }
+                    },
+                    {new:true}
+                )
+            }
+
+        }
     }
 })
 
