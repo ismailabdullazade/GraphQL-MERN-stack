@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client"
+import { useQuery } from "@apollo/client"
 import { GET_CLIENTS } from "../queries/clientQueries";
 import Spinner from "./Spinner";
 import ClientRow from "./ClientRow";
@@ -6,6 +6,7 @@ import ClientRow from "./ClientRow";
 
 
 export default function Clients(){
+
     const { loading, error, data } = useQuery(GET_CLIENTS)
 
     if(loading) return <Spinner/>;
